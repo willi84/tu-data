@@ -3,6 +3,7 @@ import { parse } from 'node-html-parser';
 import fs from 'node:fs/promises';
 import { getSheetData } from './google/google';
 import { SHEET_ID, SHEET_TAB } from './check.config';
+import { getAllProjects } from './gitlab/gitlab';
 
 type Status = 'current' | 'completed' | 'unknown';
 
@@ -19,6 +20,8 @@ type Project = {
   url: string;
   institution: string;
   status: Status;
+  source: string;
+  last_updated?: string;
 };
 
 const sources: Source[] = [
@@ -110,11 +113,14 @@ async function crawlSource(source: Source): Promise<Project[]> {
       url: source.url,
       institution: source.institution,
       status: source.status,
+      source: 'tu.berlin',
     });
   }
 
   return projects;
 }
+
+
 
 const proceedSheetData =  (sheetJson: any) => {
     const all: Project[] = [];
@@ -135,6 +141,7 @@ const proceedSheetData =  (sheetJson: any) => {
             } else {
                 dataSet[key] = data[i].v;
             }
+            dataSet['source'] = 'google form'
             i++;
         }
         all.push(dataSet as Project);
@@ -143,10 +150,38 @@ const proceedSheetData =  (sheetJson: any) => {
 
 }
 
+const TOKEN = process.env.GITLAB_TU_PAT || '';
+
+const proceedGitlabProjects =  (items: any[]): Project[] => {
+    const all = [];
+    for(const project of items) {
+        const item = {
+            id: project.id,
+            name: project.name,
+            description: project.description || '',
+            url: project.web_url,
+            institution: 'TU',
+            source: 'gitlab',
+            last_updated: project.last_activity_at,
+            status: 'current',
+        };
+        all.push(item);
+    }
+    return all;
+}
+
 async function main() {
   const all: Project[] = [];
   
+    const gitlabProjects = getAllProjects('https://git.tu-berlin.de/api/v4', TOKEN, 5, 100);
+    // console.log(gitlabProjects.items.length);
 
+    const items = await proceedGitlabProjects(gitlabProjects.items);
+    all.push(...items);
+    
+    // const gitlabItems = JSON.parse(gitlabProjects.content || '[]');
+    // console.log(gitlabItems)
+    // all.push(...gitlabProjects.items);
 
 
   const sheetJson = await getSheetData(SHEET_ID, SHEET_TAB);
