@@ -40,7 +40,7 @@ jobs:
       - name: Prepare static asset
         run: |
           mkdir -p dist
-          cp projects.json dist/projects.json
+          cp output/projects.json dist/projects.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
