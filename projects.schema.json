@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Projects",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lastUpdated": {
+      "type": "string"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/project"
+      }
+    }
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "institution"
+      ],
+      "properties": {
+        "lastUpdated": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "image": {
+          "type": "string",
+          "format": "uri"
+        },
+        "institution": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "completed",
+            "unknown"
+          ]
+        },
+        "ai": {
+          "type": "string"
+        },
+        "goals": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

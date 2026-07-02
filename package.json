@@ -1,0 +1,27 @@
+{
+  "name": "tu-data",
+  "version": "1.0.0",
+  "description": "getting data of tu berlin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsx src/index.ts --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willi84/tu-data.git"
+  },
+  "author": "Robert Willemelis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willi84/tu-data/issues"
+  },
+  "homepage": "https://github.com/willi84/tu-data#readme",
+  "devDependencies": {
+    "node-html-parser": "^8.0.4",
+    "tsx": "^4.22.4"
+  },
+  "dependencies": {
+    "@types/node": "^26.1.0"
+  }
+}
