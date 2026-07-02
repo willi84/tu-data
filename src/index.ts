@@ -163,7 +163,7 @@ async function main() {
   }
 
   // copy projects.schmea
-  await fs.copyFile('projects.schema.json', 'output/projects.schema.json');
+//   await fs.copyFile('projects.schema.json', 'output/projects.schema.json');
 
 
   await fs.mkdir('output', { recursive: true });
